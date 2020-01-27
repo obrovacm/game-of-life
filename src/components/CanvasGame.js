@@ -17,6 +17,7 @@ const surroundingOperations = [
   [1, 1]
 ];
 
+// clean GRID generator
 const generateEmptyGrid = () => {
   const rows = [];
   for (let i = 0; i < numRows; i++) {
@@ -25,6 +26,7 @@ const generateEmptyGrid = () => {
   return rows;
 };
 
+// random values GRID generator
 const generateRandomGrid = () => {
   const rows = [];
   for (let i = 0; i < numRows; i++) {
@@ -33,9 +35,7 @@ const generateRandomGrid = () => {
   return rows;
 };
 
-let GRID = generateRandomGrid();
-console.log(GRID);
-
+// mapping true array values onto grid positions
 const gridDots = () => {
   const dots = [];
   GRID.forEach((row, x) =>
@@ -45,11 +45,12 @@ const gridDots = () => {
   );
   return dots;
 };
-
+// drawing grid positions on canvas
 const drawGridDots = p5 => {
   gridDots().forEach(([x, y]) => p5.point(x, y));
 };
 
+// calculating next frame in the game
 const generationStep = () => {
   const newGrid = [...GRID];
   GRID.forEach((row, cellX) =>
@@ -83,24 +84,64 @@ const generationStep = () => {
 
   GRID = [...newGrid];
 };
+///////////////////////////////////////////////////////////////
+let LOOP = true;
+let GRID = generateRandomGrid();
+///////////////////////////////////////////////////////////////
 
 export default class CanvasGame extends Component {
   setup = (p5, canvasContainer) => {
     p5.createCanvas(numRows, numCols).parent(canvasContainer);
     p5.frameRate(10);
+    p5.background(220);
   };
 
   draw = p5 => {
-    p5.background(220);
-    generationStep();
-    drawGridDots(p5);
+    if (LOOP) {
+      p5.background(220);
+      generationStep();
+      drawGridDots(p5);
+    }
+    if (p5.mouseIsPressed) {
+      p5.frameRate(30);
+      p5.point(p5.mouseX, p5.mouseY);
+    }
   };
 
-  componentDidUpdate() {
-    console.log("component sketch updated");
-  }
-
   render() {
-    return <Sketch setup={this.setup} draw={this.draw} className={"sketch"} />;
+    return (
+      <div className={"sketch"}>
+        <Sketch setup={this.setup} draw={this.draw} />
+        {/* <button
+          onClick={() => {
+            LOOP = !LOOP;
+          }}
+        >
+          {LOOP ? "stop" : "start"}
+        </button>
+        <button
+          onClick={() => {
+            GRID = generateEmptyGrid();
+            LOOP = false;
+          }}
+        >
+          reset
+        </button>
+        <button
+          onClick={() => {
+            GRID = generateRandomGrid();
+            LOOP = true;
+          }}
+        >
+          random
+        </button> 
+        
+POTREBNO DA RADE DUGMICI I DA SE POCETNO STANJE MOZE
+CRTATI MISEM, DA SE STANJE ONDA MAPIRA U NIZ I OD CRTEZA 
+PRAVI GAME OF LIFE
+
+        */}
+      </div>
+    );
   }
 }

@@ -17,3 +17,21 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+h1 {
+  margin: 0.2em;
+}
+
+nav a {
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+nav a:hover {
+  text-decoration: underline;
+  color: "#660000";
+}
+
+nav a.active {
+  font-weight: bold;
+}

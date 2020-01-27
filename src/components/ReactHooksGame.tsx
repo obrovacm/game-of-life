@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useRef } from "react";
 import produce from "immer";
 
-const numRows = 100;
-const numCols = 100;
+const numRows = 70;
+const numCols = 70;
 
 const surroundingOperations = [
   [-1, -1],
